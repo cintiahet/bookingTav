@@ -1,0 +1,27 @@
+test_name: Post Booking
+
+includes:
+  - !include includes.yaml
+
+stages:
+  - name: Save a new booking
+    request:
+      url: "{protocol:s}://{host:s}/booking"
+      json:
+        firstname: "Test First Name"
+        lastname: "Test last Name"
+        totalprice: 1500
+        depositpaid: true
+        bookingdates:
+           checkin: "2019-01-01"
+           checkout: "2019-01-03"
+        additionalneeds: "Some text" 
+      method: POST
+      headers:
+        content-type: application/json
+    response:
+      status_code: 200
+      body:
+        bookingid: !anyint
+        booking:
+          firstname: "{tavern.request_vars.json.firstname}"

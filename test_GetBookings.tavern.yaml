@@ -1,0 +1,53 @@
+
+test_name: Get Bookings
+includes:
+  - !include includes.yaml
+
+stages:
+  - name: Make sure we have a list of bookings
+
+    # Define the request to be made...
+    request:
+      url: {protocol:s}://{host:s}/booking
+      method: GET
+
+    # ...and the expected response code and body
+    response:
+      status_code: 200
+      body: !anylist
+      save:
+        body:
+          # Save the list as 'all_users'
+          all_bookings: "@"
+
+  - name: Make sure we have a correct booking by id
+
+    # Define the request to be made...
+    request:
+      url: {protocol:s}://{host:s}/booking/1
+      method: GET
+
+    # ...and the expected response code and body
+    response:
+      status_code: 200
+      body:
+        lastname: !anystr
+        firstname: !anystr
+        totalprice: !anyint
+        depositpaid: !anybool  
+        bookingdates: 
+          checkin: !anystr
+          checkin: !anystr
+        additionalneeds: !anystr
+  
+  - name: Make sure not found id is ok
+
+    # Define the request to be made...
+    request:
+      url: {protocol:s}://{host:s}/booking/aaaaaaa
+      method: GET
+
+    # ...and the expected response code 
+    response:
+      status_code: 404
+      

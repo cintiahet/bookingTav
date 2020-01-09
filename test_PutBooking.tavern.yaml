@@ -1,0 +1,41 @@
+test_name: Update Booking Auth validation
+
+includes:
+  - !include includes.yaml
+
+stages:
+  - name: Update Booking Auth validation 
+    request:
+      url: "{protocol:s}://{host:s}/booking/1"
+      json: &input_data
+        firstname: "Test First Name up"
+        lastname: "Test last Name up"
+        totalprice: 1500
+        depositpaid: true
+        bookingdates:
+           checkin: "2019-01-01"
+           checkout: "2019-01-03"
+        additionalneeds: "Some text" 
+      method: PUT
+      headers:
+        content-type: application/json
+    response:
+      status_code: 403
+
+test_name: Update Booking Basic Auth 
+
+stages:
+  - name: Update Booking Auth sent
+    request:
+      url: "{protocol:s}://{host:s}/booking/1"
+      json:
+        <<: *input_data
+      method: PUT
+      headers:
+        content-type: application/json
+        Authorization: "Basic YWRtaW46cGFzc3dvcmQxMjM="
+    response:
+      status_code: 200
+      body:
+        firstname: "{tavern.request_vars.json.firstname}"
+

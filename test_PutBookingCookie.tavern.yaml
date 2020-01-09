@@ -1,0 +1,26 @@
+test_name: Update Booking Auth validation
+
+includes:
+  - !include auth_stage.yaml
+
+stages:
+  - type: ref
+    id: Get_Token
+  - name: Update Booking Auth validation 
+    request:
+      url: "https://restful-booker.herokuapp.com/booking/1"
+      json: 
+        firstname: "Test First Name up"
+        lastname: "Test last Name up"
+        totalprice: 1500
+        depositpaid: true
+        bookingdates:
+           checkin: "2019-01-01"
+           checkout: "2019-01-03"
+        additionalneeds: "Some text" 
+      method: PUT
+      headers:
+        Content-Type: application/json
+        Cookie: "token={token_saved}"
+    response:
+      status_code: 200

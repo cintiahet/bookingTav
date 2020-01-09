@@ -1,0 +1,25 @@
+name: Authentication stage
+description:
+  Reusable test stage for authentication
+
+variables:
+  user:
+    user: "admin"
+    pass: "password123"
+
+stages:
+  - id: Get_Token
+    name: Get token
+    request:
+      url: "https://restful-booker.herokuapp.com/auth"
+      json:
+        username: "{user.user:s}"
+        password: "{user.pass:s}"
+      method: POST
+      headers:
+        content-type: application/json
+    response:
+      status_code: 200
+      save:
+        body:
+          token_saved: token

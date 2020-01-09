@@ -1,0 +1,22 @@
+test_name: Authentication stage
+
+includes:
+  - !include includes.yaml
+
+
+stages:
+  - id: Get_Token
+    name: Get token
+    request:
+      url: "{protocol:s}://{host:s}/auth"
+      json:
+        username: "admin"
+        password: "password123"
+      method: POST
+      headers:
+        content-type: application/json
+    response:
+      status_code: 200
+      body:
+        token: !anystr
+      
